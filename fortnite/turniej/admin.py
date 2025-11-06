@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import Turniej, Zgloszenie
 
-# Register your models here.
+admin.site.register(Turniej)
+admin.site.register(Zgloszenie)
