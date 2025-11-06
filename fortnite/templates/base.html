@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <title>{% block title %}Turniej{% endblock %}</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 900px; margin: 2rem auto; }
+    nav a { margin-right: 1rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>SchoolSite</h1>
+    <nav>
+      <a href="/">Logowanie</a>
+      <a href="/tournaments/"></a>
+      <a href="/about/">O nas</a>
+      <a href="/contact/">Kontakt</a>
+    </nav>
+    <hr>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  <footer><hr>&copy; 2025</footer>
+</body>
+</html>
