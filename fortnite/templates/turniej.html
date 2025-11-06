@@ -1,10 +1,104 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Aktualne Turnieje Fortnite</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+        body {
+            background-color: #0e0e10;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #38bdf8;
+            margin-bottom: 30px;
+        }
+
+        .turniej-lista {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .turniej {
+            background-color: #1a1a1d;
+            border: 2px solid #2c2c30;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .turniej:hover {
+            border-color: #38bdf8;
+            transform: translateY(-3px);
+        }
+
+        .turniej h2 {
+            color: #facc15;
+            margin-bottom: 10px;
+        }
+
+        .turniej p {
+            color: #cbd5e1;
+            margin: 5px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            background-color: #38bdf8;
+            color: black;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0ea5e9;
+        }
+
+        .btn-disabled {
+            background-color: #444;
+            color: #999;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 <body>
+
+    <h1>🎮 Aktualne Turnieje Fortnite</h1>
+
+    <div class="turniej-lista">
+        {% for turniej in turnieje %}
+            <div class="turniej">
+                <h2>{{ turniej.nazwa }}</h2>
+                <p>Platforma: {{ turniej.platforma }}</p>
+                <p>Nagroda: {{ turniej.nagroda_pieniezna }} zł</p>
+                <p>Gracze: {{ turniej.zgloszenia.count }} / {{ turniej.liczba_graczy }}</p>
+
+                {% if turniej.zgloszenia.count < turniej.liczba_graczy %}
+                    <a href="{% url 'zapisz_sie' %}?turniej={{ turniej.id }}" class="btn">Dołącz</a>
+                {% else %}
+                    <span class="btn btn-disabled">Turniej pełny</span>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p>Brak dostępnych turniejów 😢</p>
+        {% endfor %}
+    </div>
 
 </body>
 </html>

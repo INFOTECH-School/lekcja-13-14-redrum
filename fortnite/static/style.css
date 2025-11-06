@@ -12,6 +12,13 @@ body {
     padding: 0;
 }
 
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #d4d4d8;
+}
+
 .container {
     background-color: #1a1a1d;
     border: 1px solid #27272a;
