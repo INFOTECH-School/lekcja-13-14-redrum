@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'turniej/style.css' %}">
+<div class="container">
+    <h1>Logowanie</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for field in form %}
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <p style="color:#f87171; font-size:0.9rem;">{{ field.errors.0 }}</p>
+            {% endif %}
+        {% endfor %}
+        <button type="submit">Zaloguj się</button>
+    </form>
+    <p style="text-align:center; margin-top:15px;">
+        Nie masz konta? <a href="{% url 'register' %}">Zarejestruj się</a>
+    </p>
+</div>
+{% endblock %}
