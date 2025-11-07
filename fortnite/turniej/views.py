@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from .forms import ZgloszenieForm
 from .models import Turniej
-
+from django.contrib.auth.decorators import login_required
+from .forms import AvatarForm
+from django.contrib import messages
+from .models import Zgloszenie, Profile
 def zapisz_sie(request):
     if request.method == 'POST':
         form = ZgloszenieForm(request.POST)
@@ -30,3 +33,26 @@ def zapisz_sie(request):
 def lista_turniejow(request):
     turnieje = Turniej.objects.all()
     return render(request, 'turniej.html', {'turnieje': turnieje})
+
+
+
+@login_required
+def profile_view(request):
+    profile, created = Profile.objects.get_or_create(user=request.user)
+
+    # Znajdź wszystkie zgłoszenia użytkownika po e-mailu
+    user_zgloszenia = Zgloszenie.objects.filter(email=request.user.email)
+
+    if request.method == 'POST':
+        form = AvatarForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Avatar został zaktualizowany ✅")
+    else:
+        form = AvatarForm(instance=profile)
+
+    return render(
+        request,
+        'profil.html',
+        {'user': request.user, 'form': form, 'zgloszenia': user_zgloszenia}
+    )

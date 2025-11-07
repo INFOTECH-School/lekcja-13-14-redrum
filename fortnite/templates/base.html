@@ -107,7 +107,7 @@
             <li><a href="{% url 'lista_turniejow' %}">Turnieje</a></li>
 
             {% if user.is_authenticated %}
-                <li><a href="#">Profil</a></li>
+                <li><a href="{% url 'profile' %}">Profil</a></li>
                 <li><a href="{% url 'logout' %}">Wyloguj</a></li>
             {% else %}
                 <li><a href="{% url 'login' %}">Logowanie</a></li>

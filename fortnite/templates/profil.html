@@ -1,10 +1,169 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
 
-</body>
-</html>
+{% block content %}
+<main class="profile-container">
+    <div class="profile-card">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="id_avatar">
+                <img src="{{ user.profile.avatar.url }}" alt="Avatar" class="avatar" title="Kliknij, aby zmienić">
+            </label>
+
+            <input type="file" name="avatar" id="id_avatar" accept="image/*" style="display:none;" onchange="this.form.submit()">
+
+            <h2>{{ user.username }}</h2>
+            <p>Email: {{ user.email }}</p>
+            <p>Data dołączenia: {{ user.date_joined|date:"d.m.Y" }}</p>
+            <p>Ostatnie logowanie: {{ user.last_login|date:"d.m.Y H:i" }}</p>
+        </form>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <hr class="separator">
+
+        <h3>🎮 Twoje turnieje</h3>
+
+        {% if zgloszenia %}
+            <ul class="turnieje-list">
+                {% for zg in zgloszenia %}
+                    <li class="turniej-item">
+                        <div class="turniej-header">
+                            <strong>{{ zg.turniej.nazwa }}</strong>
+                            {% if zg.turniej.data %}
+                                <span class="data">{{ zg.turniej.data|date:"d.m.Y" }}</span>
+                            {% endif %}
+                        </div>
+                        {% if zg.turniej.opis %}
+                            <p class="opis">{{ zg.turniej.opis|truncatewords:15 }}</p>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="brak-turniejow">Nie jesteś zapisany do żadnego turnieju.</p>
+        {% endif %}
+    </div>
+</main>
+
+<style>
+body {
+    background-color: #0e0e10;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 100px);
+    padding: 40px 0;
+}
+
+.profile-card {
+    background-color: #1a1a1d;
+    border: 2px solid #2c2c30;
+    border-radius: 20px;
+    padding: 40px 60px;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
+}
+
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid #38bdf8;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: transform 0.25s;
+}
+
+.avatar:hover {
+    transform: scale(1.07);
+}
+
+.profile-card h2 {
+    color: #38bdf8;
+    margin-bottom: 10px;
+}
+
+.profile-card p {
+    color: #cbd5e1;
+    margin: 5px 0;
+}
+
+.messages p {
+    color: #22c55e;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.separator {
+    margin: 25px 0;
+    border-color: #2c2c30;
+}
+
+h3 {
+    color: #facc15;
+    margin-bottom: 15px;
+}
+
+.turnieje-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.turniej-item {
+    background-color: #2c2c30;
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin-bottom: 12px;
+    text-align: left;
+    transition: background-color 0.2s;
+}
+
+.turniej-item:hover {
+    background-color: #3b3b42;
+}
+
+.turniej-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.turniej-header strong {
+    color: #38bdf8;
+    font-size: 1.1rem;
+}
+
+.turniej-header .data {
+    color: #a1a1aa;
+    font-size: 0.9rem;
+}
+
+.opis {
+    color: #cbd5e1;
+    margin-top: 6px;
+    font-size: 0.9rem;
+}
+
+.brak-turniejow {
+    color: #888;
+    font-style: italic;
+}
+</style>
+{% endblock %}

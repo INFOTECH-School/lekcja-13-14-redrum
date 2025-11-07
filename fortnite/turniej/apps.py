@@ -6,3 +6,4 @@ class TurniejConfig(AppConfig):
 
     def ready(self):
         import turniej.signals
+

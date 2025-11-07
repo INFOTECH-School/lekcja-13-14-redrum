@@ -1,5 +1,5 @@
 from django import forms
-from .models import Zgloszenie, Turniej
+from .models import Zgloszenie, Turniej, Profile
 from django.db.models import Count, F
 
 class ZgloszenieForm(forms.ModelForm):
@@ -12,3 +12,7 @@ class ZgloszenieForm(forms.ModelForm):
             Turniej.objects.annotate(liczba_zgloszen=Count('zgloszenia'))
             .filter(liczba_zgloszen__lt=F('liczba_graczy'))
         )
+class AvatarForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['avatar']
